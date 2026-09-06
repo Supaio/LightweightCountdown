@@ -10,7 +10,7 @@
 
 ## 直接使用
 
-双击 `bin\Counter.exe` 即可运行。
+请在 [Releases](https://github.com/Supaio/LightweightCountdown/releases) 下载最新版本，解压后双击 `Counter.exe` 即可运行。
 
 - 按住项目上下拖动可以调整显示顺序，越过相邻项目中点时完成换位，松开后自动保存。先横向拖动项目或拖动项目间隙可以移动整个浮窗；拖动边缘或四角可以调整大小。
 - 浮窗会吸附并限制在当前显示器的可用桌面内，顶到右上角或任务栏边缘后不会继续越界。
@@ -35,21 +35,6 @@
 - 仅在至少有一个项目运行时每秒检查一次，没有后台动画和忙等待。
 - 所有设置只保存在本机 `%LOCALAPPDATA%\LightweightCountdown\settings.ini`。
 - 不联网、不收集数据，也不需要管理员权限。
-
-## 从源码构建
-
-双击 `build.cmd`。脚本使用 Windows 自带的 .NET Framework C# 编译器，输出文件为 `bin\Counter.exe`。
-
-源码文件：
-
-- `Program.cs`：程序入口。
-- `CountdownItem.cs`：单次与每月倒计日的数据模型。
-- `WidgetForm.cs`：紧凑透明多项目浮窗、双色倒计条、托盘菜单和倒计逻辑。
-- `CountdownEditorDialog.cs`：从托盘打开的新建/编辑窗口。
-- `CountdownSchedule.cs`：每月日期与短月份计算。
-- `UiControls.cs`：轻量自绘界面控件。
-- `AppSettings.cs`：本地状态保存。
-- `StartupManager.cs`：当前用户的开机自启管理。
 
 ## 退出与卸载
 
