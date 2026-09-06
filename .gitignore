@@ -1,0 +1,20 @@
+# IDE and local build files
+.vs/
+*.user
+*.suo
+bin/*.pdb
+bin/*.xml
+bin/*.config
+
+# Local countdown state (never publish personal reminders)
+settings.ini
+**/settings.ini
+
+# Temporary QA/test artifacts
+.qa-*.cs
+bin/*Qa.exe
+bin/*preview*.exe
+
+# Obsolete preview renders; keep only the current README screenshots
+preview-widget.png
+preview-widget-desktop.png
