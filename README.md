@@ -10,7 +10,7 @@
 
 ## 直接使用
 
-请在 [Releases](https://github.com/Supaio/LightweightCountdown/releases) 下载最新版本，解压后双击 `Counter.exe` 即可运行。
+请在 [Releases](https://github.com/Supaio/LightweightCountdown/releases) 直接下载 `Counter.exe`，双击即可运行。
 
 - 按住项目上下拖动可以调整显示顺序，越过相邻项目中点时完成换位，松开后自动保存。先横向拖动项目或拖动项目间隙可以移动整个浮窗；拖动边缘或四角可以调整大小。
 - 浮窗会吸附并限制在当前显示器的可用桌面内，顶到右上角或任务栏边缘后不会继续越界。
