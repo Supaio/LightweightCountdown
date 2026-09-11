@@ -372,7 +372,11 @@ namespace LightweightCountdown
             return remaining < TimeSpan.Zero ? TimeSpan.Zero : remaining;
         }
 
-        private static long CalculateInitialTicks(CountdownItem item, DateTime targetUtc, DateTime fromUtc)
+        private static long CalculateInitialTicks(
+            CountdownItem item,
+            DateTime targetUtc,
+            DateTime fromUtc,
+            bool preserveOneTimeBaseline = false)
         {
             TimeSpan duration = item.Mode == CountdownMode.Monthly
                 ? CountdownSchedule.CalculateMonthlyCycleDuration(
@@ -380,7 +384,10 @@ namespace LightweightCountdown
                     CountdownSchedule.SafeTimeOfDay(item.LocalTimeOfDayTicks),
                     targetUtc)
                 : targetUtc - fromUtc;
-            return Math.Max(TimeSpan.FromSeconds(1).Ticks, duration.Ticks);
+            long durationTicks = Math.Max(TimeSpan.FromSeconds(1).Ticks, duration.Ticks);
+            return preserveOneTimeBaseline && item.Mode == CountdownMode.Once
+                ? Math.Max(item.InitialTicks, durationTicks)
+                : durationTicks;
         }
 
         private void CountdownTimer_Tick(object sender, EventArgs e)
@@ -507,7 +514,7 @@ namespace LightweightCountdown
                 }
 
                 item.TargetUtcTicks = target.Ticks;
-                item.InitialTicks = CalculateInitialTicks(item, target, now);
+                item.InitialTicks = CalculateInitialTicks(item, target, now, true);
                 item.PausedTicks = 0L;
                 item.IsRunning = true;
                 item.WasStarted = true;
@@ -541,7 +548,7 @@ namespace LightweightCountdown
             }
 
             item.TargetUtcTicks = target.Ticks;
-            item.InitialTicks = CalculateInitialTicks(item, target, now);
+            item.InitialTicks = CalculateInitialTicks(item, target, now, true);
             item.PausedTicks = 0L;
             item.IsRunning = true;
             item.WasStarted = true;
