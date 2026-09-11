@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 
 [assembly: AssemblyTitle("轻量倒计时")]
@@ -8,30 +9,42 @@ using System.Windows.Forms;
 [assembly: AssemblyCompany("Local")]
 [assembly: AssemblyProduct("轻量倒计时")]
 [assembly: AssemblyCopyright("Copyright © 2026")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.1.0")]
+[assembly: AssemblyFileVersion("1.0.1.0")]
 [assembly: ComVisible(false)]
 
 namespace LightweightCountdown
 {
     internal static class Program
     {
+        private const string SingleInstanceMutexName = @"Local\LightweightCountdown.SingleInstance";
+
         [STAThread]
         private static void Main(string[] args)
         {
-            bool startedWithWindows = false;
-            for (int i = 0; i < args.Length; i++)
+            bool isFirstInstance;
+            using (Mutex singleInstanceMutex = new Mutex(true, SingleInstanceMutexName, out isFirstInstance))
             {
-                if (string.Equals(args[i], "--startup", StringComparison.OrdinalIgnoreCase))
+                if (!isFirstInstance)
                 {
-                    startedWithWindows = true;
-                    break;
+                    return;
                 }
-            }
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new WidgetForm(startedWithWindows));
+                bool startedWithWindows = false;
+                for (int i = 0; i < args.Length; i++)
+                {
+                    if (string.Equals(args[i], "--startup", StringComparison.OrdinalIgnoreCase))
+                    {
+                        startedWithWindows = true;
+                        break;
+                    }
+                }
+
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new WidgetForm(startedWithWindows));
+                GC.KeepAlive(singleInstanceMutex);
+            }
         }
     }
 }
